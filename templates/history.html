@@ -1,0 +1,44 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+    <div class="jumbotron text-center">
+        <h1>Trades</h1>
+        <p class="lead">Here! you will find hitory of <strong>Buy & Sell</strong> cryptos in your portfolio, 
+            and you can conclude how you are managing your trades.
+        </p>
+    </div>
+
+    <div class="card shadow">
+    <div class="table-responsive">
+        <table class="table align-items-center table-flush">
+            <thead class="thead-light">
+                <tr>
+                    <th> Type </th>
+                    <th> Crypto </th>
+                    <th> Price </th>
+                    <th> Qty </th>
+                    <th> Date </th> 
+                </tr>
+            </thead>
+            <tbody>
+    {% for detail in list_transactions %}
+            <tr>
+                {% if detail.type == "Buy" %}
+                    <td><span class="badge badge-success" style="font-size: small;"><strong>{{detail.type}}</strong></span></td>
+                {% else %}
+                    <td><span class="badge badge-danger" style="font-size: small;"><strong>{{detail.type}}</strong></span></td>
+                {% endif %}
+
+                <td style="font-size: small;">{{detail.name}}({{detail.ticker}})</td>
+                <td>${{detail.price}}</td>
+                <td>{{detail.qty_coins}}</td>
+                <td>{{detail.transacted}}</td>
+
+            </tr>
+    {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    </div>
+
+{% endblock %}

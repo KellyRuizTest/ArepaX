@@ -1,0 +1,130 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+    <div class="jumbotron text-center">
+        <h1>Buy Bitcoin & Crypto</h1>
+        <p class="lead">Buy and sell popular digital currencies, keep track of them in the one place.</p>
+
+        {% if session.logged_in == NULL %} 
+
+            <a href="/register" class="btn btn-primary">Register </a>
+            <a href="/login" class="btn btn-success btn-log">Login </a>
+
+        {% else %}
+            <p><h3>Buy Crypto in minutes <span class="badge badge-secondary">New</span></p></h3>
+            <a href="/funding" class="subscribe btn btn-primary">Funding Account </a>
+        {% endif %}
+    </div>
+
+    <!-- It suppose to insert new Table fancy OK! -->
+    <div class="main-content">
+        <div class="container mt-9">
+          <!-- Table -->
+          <div class="row">
+            <div class="col">
+              <div class="card bg-default shadow">
+                <div class="card-header bg-transparent border-0">
+                  <h3 class="text-white mb-0">Cryptos</h3>
+                </div>
+                <div class="table-responsive">
+                  <table class="table align-items-center table-dark table-flush">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col">Project</th>
+                        <th scope="col">Last Price</th>
+                        <th scope="col">Market Cap</th>
+                        <th scope="col">24h Change</th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+
+                    {% for crypto in final_crypto %}
+                      <tr>
+                        <th scope="row">
+                          <div class="media align-items-center">
+                            <a href="#" class="avatar rounded-circle mr-3">
+                              <img alt="Image placeholder" width="42px" height="42px" src="{{crypto.logo}}">
+                            </a>
+                            <div class="media-body">
+                              <span class="mb-0 text-sm" style="text-align: left;">{{crypto.name}} ({{crypto.ticker}})</span>
+                            </div>
+                          </div>
+                        </th>
+                        <td>
+                            <strong style="font-size: medium;"> ${{crypto.price}} </strong>
+                        </td>
+                        <td>
+                          <span class="badge badge-dot mr-7">
+                                ${{crypto.market_cap}}
+                          </span>
+                        </td>
+                        <td>
+                            {% if crypto.change > 0 %}
+                                <div class="avatar-group">
+                                    <span class="badge badge-success" style="font-size: medium;">{{crypto.change}}%</span>
+                                </div>
+                            {% else %}
+                                <div class="avatar-group">
+                                    <span class="badge badge-danger" style="font-size: medium;">{{crypto.change}}%</span>
+                                </div>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="/buy" type="submit" class="btn btn-outline-primary">Buy</a>
+                        </td>
+                        <td class="text-right">
+                          <div class="dropdown">
+                            <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              <i class="fas fa-ellipsis-v"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                              <a class="dropdown-item" href="#">Action</a>
+                              <a class="dropdown-item" href="#">Another action</a>
+                              <a class="dropdown-item" href="#">Something else here</a>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                      {% endfor %}
+                      <tr>
+                        
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="card-footer bg-transparent py-4">
+                  <nav aria-label="...">
+                    <ul class="pagination justify-content-end mb-0">
+                      <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1">
+                          <i class="fas fa-angle-left"></i>
+                          <span class="sr-only">Previous</span>
+                        </a>
+                      </li>
+                      <li class="page-item active">
+                        <a class="page-link" href="#">1</a>
+                      </li>
+                      <li class="page-item">
+                        <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
+                      </li>
+                      <li class="page-item"><a class="page-link" href="#">3</a></li>
+                      <li class="page-item">
+                        <a class="page-link" href="#">
+                          <i class="fas fa-angle-right"></i>
+                          <span class="sr-only">Next</span>
+                        </a>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Final fancy Table !!-->
+
+
+{% endblock %}
+

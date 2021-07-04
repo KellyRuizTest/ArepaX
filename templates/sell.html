@@ -1,0 +1,93 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+<div class="jumbotron text-center">
+    <h2>Sell Crypto & Change for fiat</h2>
+    <p class="lead">Sell tokens, coins and trade everyday and everywhere</p>
+</div>
+
+<div class="container">
+    <div class="row">
+        <aside class="col-sm-3"></aside>
+        
+        <aside class="col-sm-6">
+        
+        <article class="card">
+            
+            <div class="card-body p-4">
+                <hr>
+                <form action="/sell" method="POST">
+                    <span class="text-right" id="available">Available:</span>
+              
+                    <div class="input-group">
+                        <input autocomplete="off" autofocus class="form-control" name="crypto" placeholder="Select a crypto" type="text">
+                        <div class="input-group-append">
+
+                            <button class="btn btn-outline-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Symbol</button>
+                            <div class="dropdown-menu" id="opcioncrypto">
+                                
+                                {% for symbol in global_list %}
+                                    <a class="dropdown-item"><img src="{{symbol.logo}}" height="18px" width="18px"></img> {{symbol.ticker}}</a>
+                                    <!--<select id="crypto">
+                                        <option value="{{symbol.ticker}}"><img src="{{symbol.logo}}" height=""></img> {{symbol.ticker}}</option>
+                                    </select> -->
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Qty</span>
+                        </div>
+                        <input autocomplete="off" class="form-control" name="qty_shares" placeholder="" type="text" required>
+                    </div>
+                    
+                    <hr>
+                    <button class="btn btn-primary btn-block" type="submit">Sell</button>
+                </form>
+            </div>
+        </article>
+        </aside>
+    </div>
+</div>
+
+<script>
+    
+$('#opcioncrypto > a').on('click', setDropdownValue);
+
+    function setDropdownValue() {
+        let $option = $(this); 
+        $option.closest('.input-group').find('input').val($option.text());
+        
+        var ticker = $option.text();
+        
+        var stringwithdata = '{{list_with_ticker_and_price}}';
+
+        newStringwithdata = stringwithdata.replace(/&#39;/g, "\"");
+        console.log(newStringwithdata)
+
+        //var JSONfinally = JSON.stringify(newStringwithdata);
+        var JSONanother = JSON.parse(newStringwithdata);
+
+        //console.log(JSONfinally)
+        console.log(JSONanother)
+        //console.log(ticker)
+
+        for (var key in JSONanother){
+
+            if (key.trim() == ticker.trim()){
+                console.log(JSONanother[key]);
+                $("#available").text("Available: "+JSONanother[key]+ticker.trim())
+            }
+        }
+    }
+
+    function checkifvalue(){
+
+    }
+
+</script>
+
+{% endblock %}

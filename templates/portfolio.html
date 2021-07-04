@@ -1,0 +1,215 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+<div class="jumbotron text-center">
+    <h2>Portfolio</h2>
+    <div class="chart-portfolio">
+        <canvas id="doughnut-chart" width="2600" height="850"></canvas>
+    </div>
+    <div class="ButtonsActions" style="margin-top: 10px;">
+        <h2 class="mb-0" style="color: #172b4d;">Cash: ${{cash}} | Portfolio: ${{total_value}}</h2>
+    </div>
+</div>
+
+<div class=".container-fluid">
+    <div class="container mt-9">
+        <div class="row">
+            <div class="col">
+                <div class="card shadow">
+                <div class="card-header border-0">
+                    <a href="/buy" class="subscribe btn btn-primary">Buy</a>
+        <a href="/sell" class="subscribe btn btn-secondary">Sell</a>
+                </div>
+                <form method="POST" id="wathever">
+                    <table class="table align-items-center table-flush">
+                        <thead class="thead-light">
+                            <tr>
+                                <th colspan="0" class="text-left"> <strong style="font-size: 120%;">Crypto</strong> </th>
+                                <th scope="col" class="text-center"> <strong style="font-size: 120%;"> Qty</strong></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for coin in final_list %}
+                            <tr id={{coin.ticker}} value={{coin.ticker}} name="selectionada">
+                                <th scope="row">
+                                    <div class="media align-items-center">
+                                      <a href="#" class="avatar rounded-circle mr-3">
+                                        <img alt="Image placeholder" width="42px" height="42px" src="{{coin.logo}}">
+                                      </a>
+                                      <div class="media-body" style="text-align: left;">
+                                        <span class="mb-0 text-sm" style="text-align: left;">{{coin.name}} ({{coin.ticker}}) </span>
+    
+                                    </div>
+                                    </div>
+                                  </th>
+                                <!-- <th class="text-center" rowspan="2" ><img src="{{coin.logo}}" width="46px" height="46px" class="rounded" ></img></th> -->
+                
+                                <td class="media-body"><strong style="font-size: medium;">{{coin.cantidad}}</strong> </td>
+                            </tr>
+                            <tr>
+                              
+                                <td style="text-align: left;"><span class="text-secondary">current price: ${{coin.price}}</span></td>
+                                <td><span class="text-secondary">${{coin.value}} </span></td>  
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    
+</div>
+
+<script>
+
+    var dataforgraph = '{{dictionary_for_graph}}';
+    var new_dataforgraph = dataforgraph.replace(/&#39;/g, "\"");    
+    var JSONanother = JSON.parse(new_dataforgraph);
+    
+    const labels_ = [];
+    const values_ = [];
+
+    for (var key in JSONanother){
+        labels_.push(key);
+        values_.push(JSONanother[key]);
+    }
+
+    console.log(values_);
+    console.log(labels_);
+
+    const colors_ = [];
+
+    for (var i =0; i<labels_.length; i++){
+
+        if (labels_[i].trim() == "BTC"){
+            colors_[i] = "#fca311";
+        }
+
+        if (labels_[i].trim() == "ETH"){
+            colors_[i] = "#4E575F";
+        }
+
+        if (labels_[i].trim() == "USDT"){
+            colors_[i] = "#56BC9D";
+        }
+
+        if (labels_[i].trim() == "BNB"){
+            colors_[i] = "#f9c74f";
+        }
+        
+        if (labels_[i].trim() == "DOGE"){
+            colors_[i] = "#eae2b7";
+        }
+
+        if (labels_[i].trim() == "ADA"){
+            colors_[i] = "#3B479D";
+        }
+
+        if (labels_[i].trim() == "USDC"){
+            colors_[i] = "#0096c7";
+        }
+
+        if (labels_[i].trim() == "DOT"){
+            colors_[i] = "#D64CA8";
+        }
+
+        if (labels_[i].trim() == "BUSD"){
+            colors_[i] = "#f9c74f";
+        }
+
+        if (labels_[i].trim() == "UNI"){
+            colors_[i] = "#f72585";
+        }
+
+        if (labels_[i].trim() == "BCH"){
+            colors_[i] = "#52b69a";
+        }
+
+        if (labels_[i].trim() == "LTC"){
+            colors_[i] = "#005BA1";
+        }
+
+        if (labels_[i].trim() == "SOL"){
+            colors_[i] = "#52b69a";
+        }
+
+        if (labels_[i].trim() == "LINK"){
+            colors_[i] = "#375bd2";
+        }
+
+        if (labels_[i].trim() == "MATIC"){
+            colors_[i] = "#6836D3";
+        }
+
+        if (labels_[i].trim() == "THETA"){
+            colors_[i] = "#06B1D8";
+        }
+
+        if (labels_[i].trim() == "WBTC"){
+            colors_[i] = "#ffc300";
+        }
+
+        if (labels_[i].trim() == "XLM"){
+            colors_[i] = "#3C5B80";
+        }
+
+        if (labels_[i].trim() == "DAI"){
+            colors_[i] = "#F9C95A";
+        }
+
+        if (labels_[i].trim() == "VET"){
+            colors_[i] = "#00BBF9";
+        }
+
+    }
+
+    var delayed;
+
+    new Chart(document.getElementById("doughnut-chart"), {
+    type: 'doughnut',
+    data: {
+      labels: labels_,
+      datasets: [
+        {
+          label: "Qty (Amount)",
+          backgroundColor: colors_,
+          data: values_
+        }
+      ]
+    },
+    options: {
+
+        animation: {
+            onComplete: () => {
+                delayed = true;
+        },
+            delay: (context) => {
+                let delay = 0;
+                if (context.type === 'data' && context.mode === 'default' && !delayed) {
+                delay = context.dataIndex * 300 + context.datasetIndex * 100;
+            }
+            return delay;
+            },
+        },
+        responsive: true,
+        plugins: {
+            legend : {
+                position: 'bottom',
+            }
+        },
+        title: {
+            display: false,
+            text: ''
+        }
+    }
+});
+
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+<div class="jumbotron text-center">
+    <h2>Buy Bitcoin & Cryptos</h2>
+    <p class="lead">Buy Bitcoin and trade everyday and everywhere</p>
+</div>
+
+<div class="container">
+    <div class="row">
+        <aside class="col-sm-3"></aside>
+        
+        <aside class="col-sm-6">
+        
+        <article class="card">
+            
+            <div class="card-body p-4">
+                <span class="text-right">Available: <strong>${{available}}</strong></span>
+                <hr>
+                <form action="/buy" method="POST">
+                    
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">$</span>
+                        </div>
+                        <input autocomplete="off" class="form-control" name="cantidad_usd" placeholder="USD" type="text" required>
+                    </div>
+
+                    <div class="input-group">
+                        <input autocomplete="off" autofocus class="form-control" name="shares" placeholder="Price" type="text">
+                        <div class="input-group-append">
+
+                            <button class="btn btn-outline-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Symbol</button>
+                            <div class="dropdown-menu" id="opcioncrypto">
+                                
+                                {% for symbol in global_list %}
+                                    <a class="dropdown-item"><img src="{{symbol.logo}}" height="18px" width="18px"></img> {{symbol.ticker}}</a>
+                                    <!--<select id="crypto">
+                                        <option value="{{symbol.ticker}}"><img src="{{symbol.logo}}" height=""></img> {{symbol.ticker}}</option>
+                                    </select> -->
+                                {% endfor %}
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <hr>
+                    <button class="btn btn-primary btn-block" type="submit">Buy</button>
+                </form>
+            </div>
+        </article>
+        </aside>
+    </div>
+</div>
+
+<script>
+    
+    $('#opcioncrypto > a').on('click', setDropdownValue);
+
+    function setDropdownValue() {
+        let $option = $(this); 
+           // Buscamos el input donde establecer el valor de la opcion seleccionada
+        $option.closest('.input-group').find('input').val($option.text());
+    }
+
+</script>
+
+{% endblock %}
